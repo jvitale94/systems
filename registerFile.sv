@@ -9,6 +9,7 @@ module registerFile(input logic [4:0] A1,
 		    output logic [31:0] RD1,
 		    output logic [31:0] RD2
 		    );
+   
    //used as the writeEnables for registers below
    logic  [0:0] yesWrite0;
    logic  [0:0] yesWrite1;
@@ -22,7 +23,7 @@ module registerFile(input logic [4:0] A1,
    //the values in each register
    logic [31:0]  reg0, reg1, reg2, reg3, reg4, reg5, reg6, reg7;
 
-   //which register are you writing to? reg0 = 000, reg1 = 001 (least sig bits in the A* inputs)
+   //Only one of these will be high since you can only write one register at a time
    assign yesWrite0 = WE3 &  ~A3[2] & ~A3[1] & ~A3[0];
    assign yesWrite1 = WE3 &  ~A3[2] & ~A3[1] & A3[0];
    assign yesWrite2 = WE3 &  ~A3[2] & A3[1] & ~A3[0];
@@ -42,14 +43,10 @@ module registerFile(input logic [4:0] A1,
    enabledRegister r6(WD3,reg6,CLK,yesWrite6);
    enabledRegister r7(WD3,reg7,CLK,yesWrite7);
 
-   //mux's to read out the registers
-  //mux4to1B32 mpxA1(A1[1],A1[0],32'b101010,32'b111111,reg1, reg0, RD1);
+   //mux's to read out the registers. We use the 8 to 1 mux we built to choose the correct register for A1 and A2
    mux8to1B32 mpxA1(A1[2], A1[1],A1[0],reg7,reg6,reg5,reg4,reg3,reg2,reg1,reg0, RD1);
-
-  //mux4to1B32 mpxA2(A2[1],A2[0],32'b101010,32'b111111,reg1, reg0, RD2);
    mux8to1B32 mpxA2(A2[2], A2[1],A2[0],reg7,reg6,reg5,reg4,reg3,reg2,reg1, reg0, RD2);
 
-   
    always @ (negedge CLK)
      begin
 	$display("*****NEW INSTRUCTION******");

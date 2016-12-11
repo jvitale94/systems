@@ -1,0 +1,5 @@
+Jake Vitale and Matt Weinberg
+
+Everything in the single cycle data path works. We print out all control signals on negative clock edges, and we also print out all registers. We print out some signals in the data path as well to ensure that things are working correctly/properly. The processor runs through the instructions and correctly makes changes to the appropriate registers. The processor has been tested to twenty clock cycles, at which point every instruction has been executed at least once. It stops after hitting instruction 13 for the second time, as a result of jumping there again after reaching jr for the second time. We had fun. Computers are cool/neat. We love our processor.
+
+"The course of true love never did run smooth"

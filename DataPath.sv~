@@ -17,6 +17,7 @@ module DataPath(clock, pcQ, instr, pcD, regWriteEnable);
 
    //set up a hard-wired connection to a value
    logic [31:0] constant4;
+   
    initial
      constant4 <= 32'b100;
 
@@ -25,9 +26,9 @@ module DataPath(clock, pcQ, instr, pcD, regWriteEnable);
    logic [31:0]        WD3, RD1, RD2;
    adder psAdd(adderIn1,adderIn2,adderOut);
    logic [0:0] 	       zero;
-   
+   logic [31:0]        PCBranch;
    //The mux before PC. Incomplete, but change when doing branch
-   mux4to1B32 BranchorPlus4(1'b0, (Branch & zero), 32'b111111, 32'b101010, 32'b010101/*change to brach later*/, adderOut, pcmux);
+   mux4to1B32 BranchorPlus4(1'b0, (Branch & zero), 32'b111111, 32'b101010, PCBranch, adderOut, pcmux);
 
    mux4to1B32 JALorJR(JumpandLink, JumpReg, 32'b111111, jumpins, RD1/*contents of register 7*/, pcmux, jumpout);
    
@@ -101,7 +102,7 @@ module DataPath(clock, pcQ, instr, pcD, regWriteEnable);
   // logic [31:0]        BranchadderIn1, BranchadderIn2, PCBranch;
   // assign BranchadderIn1 = SignShift;
   // assign BranchadderIn2 = adderOut;
-   logic [31:0]        PCBranch;
+   //logic [31:0]        PCBranch;
    adder BrachAdd(SignShift,adderOut,PCBranch);
 
    always @ (negedge clock)

@@ -3,11 +3,12 @@ module mux8to1B32 (input logic C2, input logic C1, input logic C0,
 		   input logic[31:0] I5, input logic [31:0] I4, 
 		   input logic [31:0] I3, input logic [31:0] I2,
 		   input logic [31:0] I1, input logic [31:0] I0,
-		   output logic [31:0] O1,  output logic [31:0] O2,
-		    output logic [31:0] O3);
-
-	mux4to1B32 s1(C1,C0,I3,I2,I1,I0,O);
-	mux4to1B32 s2(C1,C0,I3,I2,I1,I0,O);
-	mux4to1B32 s3(C1,C0,I3[11:8],I2[11:8],I1[11:8],I0[11:8],O[11:8]);
-	
+		   output logic [31:0] O);
+   
+   logic [31:0] O1, O2;
+   
+   mux4to1B32 s1(C2,C1,I6,I4,I2,I0,O1);
+   mux4to1B32 s2(C2,C1,I7,I5,I3,I1,O2);
+   mux4to1B32 s3(1'b0,C0,32'b111111,32'b010101,O2,O1,O);
+   
 endmodule

@@ -1,7 +1,7 @@
-module Control(ins, memWrite, regWriteEnable, RegDst, ALUSrc, MemtoReg,ALUControl, Branch, alu4, alu3, alu2, alu1, alu0);
+module Control(ins, memWrite, regWriteEnable, RegDst, ALUSrc, MemtoReg,ALUControl, Branch,JumpReg, JumpandLink, alu4, alu3, alu2, alu1, alu0);
 
    input logic [31:0] ins;
-   output logic [0:0] memWrite, regWriteEnable, RegDst, ALUSrc, MemtoReg, Branch, alu4, alu3, alu2, alu1, alu0;
+   output logic [0:0] memWrite, regWriteEnable, RegDst, ALUSrc, MemtoReg, Branch, JumpReg, JumpandLink, alu4, alu3, alu2, alu1, alu0;
    output logic [4:0] ALUControl;
 
 
@@ -26,13 +26,14 @@ module Control(ins, memWrite, regWriteEnable, RegDst, ALUSrc, MemtoReg,ALUContro
    assign alu4 = ins[31];
 
    assign ALUControl = {alu4, alu3, alu2, alu1, alu0};
-   assign ALUSrc = (lw | sw | nori_ins | bleu);
-   assign RegDst = (add | nor_ins | rolv | rorv);
-   assign regWriteEnable = (lw|add|nor_ins|nori_ins|not_ins|rolv|rorv);
+   assign ALUSrc = (lw | sw | nori_ins);
+   assign RegDst = (add |not_ins| nor_ins | rolv | rorv);
+   assign regWriteEnable = (jal|lw|add|nor_ins|nori_ins|not_ins|rolv|rorv);
    assign memWrite = sw;
    assign MemtoReg = lw;
-  // assign Branch = (bleu|jr|jal);
-   assign Brach = 1'b0;
+   assign Branch = bleu;
+   assign JumpReg = jr;
+   assign JumpandLink = jal;
    
    
    
