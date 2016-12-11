@@ -1,12 +1,11 @@
-module Control(ins, memWrite, regWriteEnable, RegDst, ALUSrc, MemtoReg,ALUControl, alu4, alu3, alu2, alu1, alu0);
+module Control(ins, memWrite, regWriteEnable, RegDst, ALUSrc, MemtoReg,ALUControl, Branch, alu4, alu3, alu2, alu1, alu0);
 
    input logic [31:0] ins;
-   output logic [0:0] memWrite, regWriteEnable, RegDst, ALUSrc, MemtoReg, alu4, alu3, alu2, alu1, alu0;
+   output logic [0:0] memWrite, regWriteEnable, RegDst, ALUSrc, MemtoReg, Branch, alu4, alu3, alu2, alu1, alu0;
    output logic [4:0] ALUControl;
 
 
    logic [0:0] lw, sw, add, jr, jal, nor_ins, nori_ins, not_ins, bleu, rolv, rorv;
-
    
    assign lw = ins[31] & ~ins[30] & ~ins[29] & ~ins[28] & ins[27] & ins[26];
    assign sw = ins[31] & ~ins[30] & ins[29] & ~ins[28] & ins[27] & ins[26];
@@ -20,7 +19,6 @@ module Control(ins, memWrite, regWriteEnable, RegDst, ALUSrc, MemtoReg,ALUContro
    assign rolv = ~ins[31] & ~ins[30] & ~ins[29] & ~ins[28] & ~ins[27] & ~ins[26];
    assign rorv = ~ins[31] & ~ins[30] & ~ins[29] & ~ins[28] & ins[27] & ~ins[26];
    
-   
    assign alu0 = ins[27];
    assign alu1 = ins[28];
    assign alu2 = ins[29];
@@ -28,14 +26,15 @@ module Control(ins, memWrite, regWriteEnable, RegDst, ALUSrc, MemtoReg,ALUContro
    assign alu4 = ins[31];
 
    assign ALUControl = {alu4, alu3, alu2, alu1, alu0};
-
    assign ALUSrc = (lw | sw | nori_ins | bleu);
    assign RegDst = (add | nor_ins | rolv | rorv);
-  
    assign regWriteEnable = (lw|add|nor_ins|nori_ins|not_ins|rolv|rorv);
-   //You need to change this to implement sw
    assign memWrite = sw;
    assign MemtoReg = lw;
+  // assign Branch = (bleu|jr|jal);
+   assign Brach = 1'b0;
+   
+   
    
    
 
