@@ -34,10 +34,6 @@ module Control(ins, memWrite, regWriteEnable, RegDst, ALUSrc, MemtoReg,ALUContro
    assign MemtoReg = lw;
    assign Branch = bleu;
    assign JumpReg = jr;
-   assign JumpandLink = jal;
-   
-   
-   
-   
+   assign JumpandLink = jal;   
 
    endmodule
